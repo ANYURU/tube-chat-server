@@ -1,0 +1,15 @@
+{
+  "name": "chat_server",
+  "version": "1.0.0",
+  "description": "Realtime chat socket io",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "Realtime",
+    "Chat"
+  ],
+  "author": "Anyuru David Derrick",
+  "license": "ISC"
+}
