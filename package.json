@@ -4,12 +4,20 @@
   "description": "Realtime chat socket io",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start":"nodemon index.js"
   },
   "keywords": [
     "Realtime",
     "Chat"
   ],
   "author": "Anyuru David Derrick",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "http": "^0.0.1-security",
+    "nodemon": "^2.0.20",
+    "socket.io": "^4.5.2"
+  }
 }
