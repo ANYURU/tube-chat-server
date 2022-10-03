@@ -1,16 +1,16 @@
 const express = require("express");
+require("dotenv").config();
 const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors  = require("cors");
+const PORT = process.env.PORT || 3001
 
 app.use(cors());
 
 /* 
  Socket io works using events in a way that you can either create or emit an event and listen to an event.
 */
-
-let online_users = []
 
 const server = http.createServer(app);
 
@@ -65,8 +65,7 @@ io.on("connection", (socket) => {
     
 })
 
-const port = 3001;
 
-server.listen(3001, () => {
-    console.log(`server is running at port ${port}`)
+server.listen(PORT, () => {
+    console.log(`server is running at port ${PORT}`)
 } )
