@@ -65,10 +65,6 @@ io.on("connection", (socket) => {
     
 })
 
-app.get("/", (request, response) => {
-    response.send("hello world")
-})
-
 const port = 3001;
 
 server.listen(3001, () => {
