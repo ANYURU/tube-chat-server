@@ -21,30 +21,47 @@ const io = new Server(server, {
     },
 });
 
+io.use((socket, next) => {
+    const username = socket.handshake.auth.username;
+    socket.join(username)
+    
+    if (!username) {
+      return next(new Error("invalid username"));
+    }
+    socket.username = username;
+    next();
+});
+
 io.on("connection", (socket) => {
-    // console.log(`User connected: ${socket.id}`)
-    const sender_id = socket.handshake.query.id
-    socket.join( sender_id )
-    online_users.push(sender_id)
+    const users = []
+
+    for (let [ id, username] of io.of("/").sockets) {
+        users.push(username.username)
+    }
+    
+    io.of("/").emit("online_users", users)
+
+    socket.on("check_online", (data) => {
+        socket.to(data).emit("online_users", users)
+    })
 
     socket.on("send_message", ((data) => {
         socket.to(data.receiver_id).emit("receive_message", data)
     }))
 
     socket.on("send_typing_status", (data) => {
-        socket.to(data.receiver_id).emit("receive_typing_status", data)
-        console.log(`User ${data.receiver_name} is ${data.typing_status ? "typing" : "not typing"}`)
-    })
-
-    socket.on("add_online_user", (data) => {
         console.log(data)
-        // modify the online users array.
-        const new_online_users = new Set([...online_users, data.sender_id])
-        online_users = [...new_online_users]
-        console.log([...new_online_users])
-        socket.broadcast.emit("receive_online_users", online_users)
+        socket.to(data.receiver_id).emit("receive_typing_status", data)
     })
-
+    
+    socket.on("logout", (data) => {
+        const index = users.indexOf(data)
+        if (index > -1) users.splice(index, 1)
+        io.of("/").in(data).local.disconnectSockets();
+        socket.broadcast.emit("user_disconnected", users)
+        console.log(`${data} is now offline`)
+        console.log("current online users: ", users)
+    })
     
 })
 
