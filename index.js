@@ -14,9 +14,18 @@ app.use(cors());
 
 const server = http.createServer(app);
 
+const allowedOrigins = [ "https://tube.ablestate.co", "https://tube-omega.vercel.app"]
+
 const io = new Server(server, {
     cors: {
-        origin: "https://tube-omega.vercel.app",
+        origin: function( origin, callback) {
+            if( !origin ) return callback(null, true)
+            if (allowedOrigins.indexOf(origin) === -1) {
+                const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+                return callback(new Error(msg), false);
+            }
+            return callback(null, true);
+        },
         methods: ["GET", "POST"]
     },
 });
