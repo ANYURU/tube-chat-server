@@ -14,7 +14,7 @@ app.use(cors());
 
 const server = http.createServer(app);
 
-const allowedOrigins = [ "https://tube.ablestate.co", "https://tube-omega.vercel.app"]
+const allowedOrigins = "https://tube.ablestate.co"
 
 const io = new Server(server, {
     cors: {
