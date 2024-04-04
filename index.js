@@ -18,6 +18,7 @@ const allowedOrigins = [
   "https://tube.ablestate.africa",
   "https://tube-omega.vercel.app",
   "https://tube-gamma.vercel.app",
+  "http://localhost:3000"
 ];
 
 const io = new Server(server, {
@@ -25,13 +26,13 @@ const io = new Server(server, {
     origin: (origin, callback) => {
       console.log("DEVELOPMENT: " ,process.env.DEVELOPMENT);
       console.log("ORIGIN: ", origin);
-      if (process.env.DEVELOPMENT && origin.startsWith("http://localhost")) {
-        console.log("Reached here in development")
-        return callback(null, true);
-      }
 
       if (allowedOrigins.indexOf(origin) !== -1) {
+        console.log("ORIGIN ALLOWED: ", origin);
         return callback(null, true);
+      } else {
+        console.log("ORIGIN NOT ALLOWED: ", origin);
+        return callback(new Error("Not allowed by CORS"));
       }
     },
     methods: ["GET", "POST"],
