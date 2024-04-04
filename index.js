@@ -23,8 +23,11 @@ const allowedOrigins = [
 const io = new Server(server, {
   cors: {
     origin: (origin, callback) => {
+      console.log("DEVELOPMENT: " ,process.env.DEVELOPMENT);
+      console.log("ORIGIN: ", origin);
       if (process.env.DEVELOPMENT && origin.startsWith("http://localhost")) {
-        return callback(null, true); 
+        console.log("Reached here in development")
+        return callback(null, true);
       }
 
       if (allowedOrigins.indexOf(origin) !== -1) {
